@@ -130,7 +130,22 @@ public class Main extends Application {
 	}
 
 	private Object mqttUnsubscribe() {
-		// TODO Auto-generated method stub
+		if(		mqttClientOperational() 
+			&& 	textField!= null 
+			&& 	!textField.getText().isEmpty()
+			&& 	textArea!= null )
+		{
+			textArea.appendText("Unsubscribing following topic: " + textField.getText() + "\n");
+			try {
+				mqttClient.unsubscribe(textField.getText());
+			} catch (MqttException e) {
+				if(textArea != null)
+				{
+					textArea.appendText("Exception message: " + e.getMessage()+ "\n");
+				}
+				e.printStackTrace();
+			}
+		}
 		return null;
 	}
 
@@ -143,8 +158,7 @@ public class Main extends Application {
 		
 		if(		mqttClientOperational() 
 			&& 	textField!= null 
-			&& 	!textField.getText().isEmpty()
-		)
+			&& 	!textField.getText().isEmpty())
 		{
 			try {
 				if (	mqttClient.subscribe(textField.getText()) 
@@ -155,6 +169,10 @@ public class Main extends Application {
 				}
 			} catch (MqttException e) {
 				// TODO Auto-generated catch block
+				if(textArea != null)
+				{
+					textArea.appendText("Exception message: " + e.getMessage()+ "\n");
+				}
 				e.printStackTrace();
 			}
 		}
@@ -171,9 +189,12 @@ public class Main extends Application {
 				{
 					textArea.appendText("Disconnected from broker.\n");
 				}
-			} catch (MqttException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (MqttException e) {
+				if(textArea != null)
+				{
+					textArea.appendText("Exception message: " + e.getMessage()+ "\n");
+				}
+				e.printStackTrace();
 			}
 			
 		}
@@ -251,7 +272,11 @@ public class Main extends Application {
 				try {
 					mqttClient.close();
 				} catch (MqttException e1) {
-					// TODO Auto-generated catch block
+					if(textArea != null)
+					{
+						textArea.appendText("Exception message: " + e.getMessage()+ "\n");
+					}
+								
 					e1.printStackTrace();
 				}
 				
