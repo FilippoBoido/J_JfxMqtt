@@ -80,6 +80,23 @@ public class MqttFx {
 		}
 		
 	}
+	
+	public boolean unsubscribe(String topic) throws MqttException
+	{
+		if(mqttClient != null && mqttClient.isConnected())
+		{
+			System.out.println("[MqttFx.unsubscribe] Unubscribing topic: " + topic);
+			mqttClient.unsubscribe(topic);
+			return true;
+		}
+		else
+		{
+			System.out.println("[MqttFx.subscribe] Not subscribed to topic, mqtt client either null or not connected");	
+			return false;
+		}
+		
+	}
+	
 	public void publish(String message) throws MqttPersistenceException, MqttException
 	{
 		if(mqttClient != null && mqttClient.isConnected())

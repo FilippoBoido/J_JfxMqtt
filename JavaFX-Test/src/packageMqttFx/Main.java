@@ -73,9 +73,9 @@ public class Main extends Application {
 					node.addEventHandler(ActionEvent.ACTION, event -> mqttConnect());
 					break;
 					
-				case "resetId":
+				case "clearId":
 					
-					node.addEventHandler(ActionEvent.ACTION, event -> reset());
+					node.addEventHandler(ActionEvent.ACTION, event -> clear());
 					break;
 					
 				case "disconnectId":
@@ -98,7 +98,14 @@ public class Main extends Application {
 					node.addEventHandler(ActionEvent.ACTION, event -> mqttSubscribe());
 					break;
 					
+				case "unsubscribeId":
 					
+					node.addEventHandler(ActionEvent.ACTION, event -> mqttUnsubscribe());
+					break;	
+				case "publishId":
+					
+					node.addEventHandler(ActionEvent.ACTION, event -> mqttPublish());
+					break;
 				}
 			}
 			
@@ -117,6 +124,16 @@ public class Main extends Application {
 		}
 		
 	}
+	private Object mqttPublish() {
+		
+		return null;
+	}
+
+	private Object mqttUnsubscribe() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private boolean mqttClientOperational()
 	{
 		return (mqttClient != null) && (mqttClient.isConnected());
@@ -180,7 +197,7 @@ public class Main extends Application {
 		return null;
 	}
 
-	private Object reset() {
+	private Object clear() {
 		
 		if(textArea != null)
 		{
@@ -221,7 +238,7 @@ public class Main extends Application {
 					
 		try {
 			
-			mqttClient = new MqttFx(broker, new MqttFxCallback() ) ;
+			mqttClient = new MqttFx(broker, new MqttFxCallback(textArea) ) ;
 			if(textArea != null)
 			{
 				textArea.appendText("Connected to broker.\n");
