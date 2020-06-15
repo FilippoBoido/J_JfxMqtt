@@ -43,8 +43,7 @@ public class Main extends Application {
 			
 			ArrayList<Node> nodes = getAllNodes(root);
 			
-			
-			
+						
 			for(Node node : nodes)
 			{
 				if(node.getId() == null)
@@ -106,6 +105,7 @@ public class Main extends Application {
 					
 					node.addEventHandler(ActionEvent.ACTION, event -> mqttPublish());
 					break;
+					
 				}
 			}
 			

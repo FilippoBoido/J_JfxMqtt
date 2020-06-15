@@ -97,6 +97,24 @@ public class MqttFx {
 		
 	}
 	
+	public void publish(String topic,String message) throws MqttPersistenceException, MqttException
+	{
+		if(mqttClient != null && mqttClient.isConnected())
+		{
+
+			System.out.println("[MqttFx.publish] Publishing message: "+message);
+	        MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+	        mqttMessage.setQos(qos);
+	        mqttClient.publish(topic, mqttMessage);
+	        System.out.println("[MqttFx.publish] Message published");
+						
+		} 
+		else
+		{
+			System.out.println("[MqttFx.publish] Message not published, mqtt client either null or not connected");	
+		}
+	}
+	
 	public void publish(String message) throws MqttPersistenceException, MqttException
 	{
 		if(mqttClient != null && mqttClient.isConnected())
