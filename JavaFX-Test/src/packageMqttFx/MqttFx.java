@@ -9,6 +9,8 @@ import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import javafx.scene.control.TextArea;
+
 public class MqttFx {
 
 	private String topic;          
@@ -18,14 +20,16 @@ public class MqttFx {
 	private static MemoryPersistence persistence;
 	private static MqttClient mqttClient;
 	private static MqttConnectOptions connOpts;
+	private TextArea console;
 	//private MqttCallback mqttCallback;
 	
 	private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	
-	public MqttFx(String broker, MqttCallback mqttCallback) throws MqttSecurityException, MqttException 
+	public MqttFx(String broker, MqttCallback mqttCallback, TextArea console) throws MqttSecurityException, MqttException 
 	{	
 		if(mqttClient == null)
 		{
+			this.console = console;
 			this.broker = broker;
 			this.clientId = randomAlphaNumeric(8);
 			
@@ -36,16 +40,32 @@ public class MqttFx {
 					
 			connOpts = new MqttConnectOptions();
 	        connOpts.setCleanSession(true);
+	        
+	        if(console != null)
+	        {
+	        	console.appendText("Connecting to broker: "+broker + ".\n");
+	        }
+	        
 	        System.out.println("[MqttFx] Connecting to broker: "+broker);
 	        
 			mqttClient.connect(connOpts);
 			
 	        System.out.println("[MqttFx] Client connected");
+	        
+	        if(console != null)
+	        {
+	        	console.appendText("Client connected.\n");
+	        }
 		}
 		else if(!mqttClient.isConnected())
 		{
 			mqttClient.reconnect();
 			System.out.println("[MqttFx] Client reconnected");
+			
+			if(console != null)
+	        {
+	        	console.appendText("Client reconnected.\n");
+	        }
 		}
 	}
 
@@ -71,6 +91,10 @@ public class MqttFx {
 		{
 			System.out.println("[MqttFx.subscribe] Subscribing to topic: " + topic);
 			mqttClient.subscribe(topic);
+			if(console != null)
+	        {
+	        	console.appendText("Subscribed to topic: " + topic + ".\n");
+	        }
 			return true;
 		}
 		else
@@ -138,7 +162,11 @@ public class MqttFx {
 		if(mqttClient != null && mqttClient.isConnected())
 		{			
 					mqttClient.publish(topic,payload,2,false);
-			        System.out.println("[MqttFx.publish] Message published");		
+			        System.out.println("[MqttFx.publish] Message published");	
+			        if(console != null)
+			        {
+			        	console.appendText("Message published.\n");
+			        }
 		}  
 		else
 		{
@@ -152,6 +180,10 @@ public class MqttFx {
 		{	
 			mqttClient.disconnect();				
 			System.out.println("[MqttFx.close] Client disconnected");
+			if(console != null)
+	        {
+	        	console.appendText("Client disconnected.\n");
+	        }
 		}
 	}
 	
@@ -163,6 +195,11 @@ public class MqttFx {
 			mqttClient.close();			
 			mqttClient = null;
 			System.out.println("[MqttFx.close] Client closed");
+			if(console != null)
+	        {
+	        	console.appendText("Client closed.\n");
+	        }
+	        	
 		}
 		
 	}

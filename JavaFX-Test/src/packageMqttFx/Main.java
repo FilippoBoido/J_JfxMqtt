@@ -259,7 +259,7 @@ public class Main extends Application {
 					
 		try {
 			
-			mqttClient = new MqttFx(broker, new MqttFxCallback(textArea) ) ;
+			mqttClient = new MqttFx(broker, new MqttFxCallback(textArea),textArea ) ;
 			if(textArea != null)
 			{
 				textArea.appendText("Connected to broker.\n");
